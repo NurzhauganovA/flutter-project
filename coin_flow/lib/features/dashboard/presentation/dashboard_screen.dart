@@ -20,7 +20,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   int _touchedIndex = -1;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final transactionsAsync = ref.watch(transactionsStreamProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 

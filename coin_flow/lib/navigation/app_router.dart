@@ -8,6 +8,10 @@ import '../features/home/presentation/home_screen.dart';
 import '../features/transactions/presentation/screens/add_transaction_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
+// Импорты новых экранов (создадим их ниже)
+import '../features/search/presentation/search_screen.dart';
+import '../features/budget/presentation/budget_screen.dart';
+import '../features/profile/presentation/edit_profile_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
@@ -20,31 +24,23 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/login',
-
-    // Логика защиты роутов (Redirect)
     redirect: (context, state) {
       final isAuthenticated = authState.valueOrNull != null;
       final isLoginRoute = state.uri.toString() == '/login';
-
       if (!isAuthenticated) return isLoginRoute ? null : '/login';
       if (isAuthenticated && isLoginRoute) return '/home';
-
       return null;
     },
-
     routes: [
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginScreen(),
       ),
-
-      // Оболочка с нижней навигацией (ShellRoute)
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return ScaffoldWithNavBar(navigationShell: navigationShell);
         },
         branches: [
-          // Ветка 1: Главная
           StatefulShellBranch(
             navigatorKey: _shellNavigatorHomeKey,
             routes: [
@@ -54,8 +50,6 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-
-          // Ветка 2: Статистика
           StatefulShellBranch(
             navigatorKey: _shellNavigatorStatsKey,
             routes: [
@@ -65,8 +59,6 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-
-          // Ветка 3: Настройки
           StatefulShellBranch(
             navigatorKey: _shellNavigatorSettingsKey,
             routes: [
@@ -78,12 +70,30 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-
-      // Экран добавления (вне нижней навигации, чтобы перекрывал всё)
+      // --- Новые роуты ---
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
         path: '/add-transaction',
-        builder: (context, state) => const AddTransactionScreen(),
+        builder: (context, state) {
+          // Если передаем параметры (например, тип транзакции)
+          final extra = state.extra as Map<String, dynamic>?;
+          return AddTransactionScreen(initialType: extra?['type']);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: '/search',
+        builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: '/budgets',
+        builder: (context, state) => const BudgetScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: '/edit-profile',
+        builder: (context, state) => const EditProfileScreen(),
       ),
     ],
   );

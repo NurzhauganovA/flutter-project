@@ -10,7 +10,8 @@ import '../../../../core/models/category_model.dart';
 import '../../../../core/utils/currency_utils.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
-  const AddTransactionScreen({super.key});
+  final String? initialType;
+  const AddTransactionScreen({super.key, this.initialType});
 
   @override
   ConsumerState<AddTransactionScreen> createState() => _AddTransactionScreenState();
@@ -39,8 +40,11 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
         });
       }
     });
-    // Устанавливаем первую категорию по умолчанию
-    _selectedCategory = CategoriesData.expenseCategories.first;
+    if (widget.initialType == 'income') {
+      _tabController.animateTo(1);
+      _type = TransactionType.income;
+      _selectedCategory = CategoriesData.incomeCategories.first;
+    }
   }
 
   @override

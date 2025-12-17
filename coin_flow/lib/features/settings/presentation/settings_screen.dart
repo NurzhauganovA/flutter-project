@@ -196,12 +196,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           IconButton(
             icon: const Icon(Icons.edit, color: Colors.white),
-            onPressed: () {
-              // TODO: Edit profile
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Функция в разработке')),
-              );
-            },
+            onPressed: () => context.push('/edit-profile'),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'navigation/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart'; // Импорт нового провайдера
@@ -8,6 +9,7 @@ import 'core/theme/theme_provider.dart'; // Импорт нового прова
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting('ru', null);
 
   runApp(const ProviderScope(child: CoinFlowApp()));
 }
