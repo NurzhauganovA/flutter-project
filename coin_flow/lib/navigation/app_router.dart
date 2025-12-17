@@ -6,11 +6,13 @@ import '../features/auth/data/auth_repository.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/home/presentation/home_screen.dart';
 import '../features/transactions/presentation/screens/add_transaction_screen.dart';
-import '../features/dashboard/presentation/dashboard_screen.dart'; // Создадим ниже
+import '../features/dashboard/presentation/dashboard_screen.dart';
+import '../features/settings/presentation/settings_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final _shellNavigatorStatsKey = GlobalKey<NavigatorState>(debugLabel: 'shellStats');
+final _shellNavigatorSettingsKey = GlobalKey<NavigatorState>(debugLabel: 'shellSettings');
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateChangesProvider);
@@ -60,6 +62,17 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/stats',
                 builder: (context, state) => const DashboardScreen(),
+              ),
+            ],
+          ),
+
+          // Ветка 3: Настройки
+          StatefulShellBranch(
+            navigatorKey: _shellNavigatorSettingsKey,
+            routes: [
+              GoRoute(
+                path: '/settings',
+                builder: (context, state) => const SettingsScreen(),
               ),
             ],
           ),
